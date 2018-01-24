@@ -3,6 +3,7 @@ package media.dee.service.template.freemarker;
 
 import com.sun.tools.javac.util.List;
 import freemarker.template.TemplateModelException;
+import media.dee.core.repository.api.ComponentRepository;
 import media.dee.core.service.api.ComponentService;
 
 import org.junit.jupiter.api.Test;
@@ -35,7 +36,7 @@ public class FreeMarkerTemplateServiceTest {
 
 
     ComponentResolver componentResolver = mock(ComponentResolver.class);
-    ComponentService componentService = mock(ComponentService.class);
+    ComponentRepository componentRepository = mock(ComponentRepository.class);
 
     FreeMarkerTemplateService templateService = new FreeMarkerTemplateService();
 
@@ -63,21 +64,21 @@ public class FreeMarkerTemplateServiceTest {
         comp1.put("name","comp1");
         comp1.put("template",nested_component);
         comp1.put("dependency","<script src=\"javascript1.js\"></script>");
-        Mockito.when(componentService.getComponent(eq("1234"),anyMap())).thenReturn(comp1);
+        Mockito.when(componentRepository.findOne(eq("1234"),anyMap())).thenReturn(comp1);
 
         Map<String,Object> comp2 = new HashMap();
         comp2.put("name","comp2");
         comp2.put("template",nested_child);
         comp2.put("dependency","<script src=\"javascript2.js\"></script>");
-        Mockito.when(componentService.getComponent(eq("2222"),anyMap())).thenReturn(comp2);
+        Mockito.when(componentRepository.findOne(eq("2222"),anyMap())).thenReturn(comp2);
 
         Map<String,Object> comp3 = new HashMap();
         comp3.put("name","comp3");
         comp3.put("template","Here!!!!!");
         comp3.put("dependency","<script src=\"javascript3.js\"></script>");
-        Mockito.when(componentService.getComponent(eq("1111"),anyMap())).thenReturn(comp3);
+        Mockito.when(componentRepository.findOne(eq("1111"),anyMap())).thenReturn(comp3);
 
-        resolver.setComponentRenderer(componentService);
+        resolver.setComponentRenderer(componentRepository);
         StringBuffer buffer = resolver.render("name",html_component, null);
 
         System.out.println(buffer);

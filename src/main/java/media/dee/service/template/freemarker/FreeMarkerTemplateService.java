@@ -4,6 +4,7 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.Version;
+import media.dee.core.repository.api.ComponentRepository;
 import media.dee.core.service.api.ComponentService;
 import media.dee.core.service.api.TemplateService;
 import org.osgi.service.component.annotations.Component;
@@ -29,7 +30,7 @@ public class FreeMarkerTemplateService implements TemplateService {
         cfg = new Configuration(new Version("2.3.0"));
     }
 
-    private ComponentService componentRenderer;
+    private ComponentRepository componentRepository;
 
     public StringBuffer render(String name, String html, Map<String,Object> dataModel) throws IOException {
         if(dataModel == null)
@@ -60,14 +61,14 @@ public class FreeMarkerTemplateService implements TemplateService {
 
 
     @Reference
-    public void setComponentRenderer(ComponentService componentRenderer){
-        this.componentRenderer = componentRenderer;
+    public void setComponentRenderer(ComponentRepository componentRepository){
+        this.componentRepository = componentRepository;
     }
 
 
     public ComponentResolver getComponentResolver(Set<String> dependencies, Map<String,Object> dataModel){
 
-        return  new ComponentResolver( dependencies,dataModel, componentRenderer,this);
+        return  new ComponentResolver( dependencies,dataModel, componentRepository,this);
     }
 }
 
