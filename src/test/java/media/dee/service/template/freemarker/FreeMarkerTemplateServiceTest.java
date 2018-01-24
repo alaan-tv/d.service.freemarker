@@ -23,7 +23,7 @@ public class FreeMarkerTemplateServiceTest {
     private static final String html_component = "" +
             "<html>\n"+
             "  <head>\n"+
-            "    ##INSERT_DEPENDENCIES_HERE##\n"+
+            "    ${Dependencies}\n"+
             "  </head>\n"+
             "  <body>\n"+
             "    This is Component example." +

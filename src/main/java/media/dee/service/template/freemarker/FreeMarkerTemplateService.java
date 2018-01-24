@@ -1,9 +1,6 @@
 package media.dee.service.template.freemarker;
 
-import freemarker.template.Configuration;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
-import freemarker.template.Version;
+import freemarker.template.*;
 import media.dee.core.repository.api.ComponentRepository;
 import media.dee.core.service.api.ComponentService;
 import media.dee.core.service.api.TemplateService;
@@ -20,14 +17,18 @@ import java.util.stream.Collectors;
 
 @Component(immediate = true, service = TemplateService.class)
 public class FreeMarkerTemplateService implements TemplateService {
-    private static final String DEPENDENCY = "##INSERT_DEPENDENCIES_HERE##";
+    private static final String DEPENDENCY_SENITNEL = "##INSERT_DEPENDENCIES_HERE##";
     private static final String COMPONENT = "Component";
     private static final String CONTAINER = "Container";
-
     private static Configuration cfg = null;
 
     static{
         cfg = new Configuration(new Version("2.3.0"));
+        try {
+            cfg.setSharedVariable("Dependencies", DEPENDENCY_SENITNEL);
+        } catch (TemplateModelException e) {
+            e.printStackTrace();
+        }
     }
 
     private ComponentRepository componentRepository;
@@ -38,7 +39,7 @@ public class FreeMarkerTemplateService implements TemplateService {
 
         Set<String> dependencies = new HashSet<>();
         String output = this.render(name, html, dataModel, dependencies);
-        output = output.replace(DEPENDENCY,dependencies.stream().collect(Collectors.joining("\n")));
+        output = output.replace(DEPENDENCY_SENITNEL,dependencies.stream().collect(Collectors.joining("\n")));
         return new StringBuffer(output);
 
     }
