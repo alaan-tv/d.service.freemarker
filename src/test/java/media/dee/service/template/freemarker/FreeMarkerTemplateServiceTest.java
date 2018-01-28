@@ -4,8 +4,6 @@ package media.dee.service.template.freemarker;
 import com.sun.tools.javac.util.List;
 import freemarker.template.TemplateModelException;
 import media.dee.core.repository.api.ComponentRepository;
-import media.dee.core.service.api.ComponentService;
-
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -27,7 +25,7 @@ public class FreeMarkerTemplateServiceTest {
             "  </head>\n"+
             "  <body>\n"+
             "    This is Component example." +
-            "  ${Container('1234')}"+
+            "  ${Container('1234','{\"data\":\"data!!\"}')}"+
             "  </body>\n"+
             "</html>\n";
 
@@ -56,8 +54,6 @@ public class FreeMarkerTemplateServiceTest {
 
     @Test
     public void renderNestedComponent() throws IOException {
-        Map context = new HashMap();
-
 
         FreeMarkerTemplateService resolver = Mockito.spy(templateService);
         Map<String,Object> comp1 = new HashMap();
