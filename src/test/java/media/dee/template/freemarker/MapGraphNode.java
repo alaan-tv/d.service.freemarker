@@ -1,13 +1,13 @@
 package media.dee.template.freemarker;
 
-import media.dee.dcms.core.GraphNode;
+import media.dee.dcms.core.db.GraphDatabaseService;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MapGraphNode extends HashMap<String, Object> implements GraphNode {
+public class MapGraphNode extends HashMap<String, Object> implements GraphDatabaseService.GraphNode {
     private Collection<String> labels = Collections.emptySet();
     private long rawid;
 

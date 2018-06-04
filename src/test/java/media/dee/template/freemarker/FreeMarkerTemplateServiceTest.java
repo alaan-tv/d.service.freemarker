@@ -1,7 +1,7 @@
 package media.dee.template.freemarker;
 
 
-import media.dee.dcms.core.GraphNode;
+import media.dee.dcms.core.db.GraphDatabaseService;
 import media.dee.dcms.core.layout.RenderException;
 import media.dee.dcms.core.services.ComponentService;
 import org.junit.jupiter.api.Test;
@@ -42,7 +42,7 @@ public class FreeMarkerTemplateServiceTest {
         });
 
 
-        GraphNode model = new MapGraphNode(100L, Collections.singleton("Post"), new HashMap<>());
+        GraphDatabaseService.GraphNode model = new MapGraphNode(100L, Collections.singleton("Post"), new HashMap<>());
         StringBuffer buffer = templateService.render(
                 "<html><head><script type=\"text/javascript\">console.log('>>hello<<');</script></head><body>${Container(2)}</body></html>",
                 model
