@@ -4,6 +4,8 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.Version;
+import media.dee.dcms.core.GraphNode;
+import media.dee.dcms.core.layout.RenderException;
 import media.dee.dcms.core.services.ComponentService;
 import media.dee.dcms.core.services.TemplateService;
 import org.jsoup.Jsoup;
@@ -26,7 +28,7 @@ public class FreeMarkerTemplateService implements TemplateService {
     private final Configuration cfg = new Configuration(new Version("2.3.28"));
     private ComponentService componentService;
 
-    public StringBuffer render(String html, Map<String,Object> dataModel) {
+    public StringBuffer render(String html, GraphNode dataModel)  throws RenderException{
         Map<DependencyType, Set<Dependency>> dependencies = new HashMap<>();
         StringWriter out = new StringWriter();
         Map<String, Object> model = new HashMap<>();
@@ -45,9 +47,10 @@ public class FreeMarkerTemplateService implements TemplateService {
 
             return new StringBuffer(document.outerHtml());
 
-        } catch (TemplateException | IOException e) {
-            e.printStackTrace();
-            return null;
+        } catch (TemplateException e) {
+            throw new FreeMarkerRenderException(e);
+        } catch (IOException e){
+            throw new FreeMarkerRenderException(e);
         }
     }
 
