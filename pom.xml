@@ -13,6 +13,7 @@
     <artifactId>freemarker-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>bundle</packaging>
+    <name>Dee.CMS Freemarker Template Serivce Provide</name>
 
     <dependencies>
     <dependency>
@@ -65,6 +66,12 @@
             <artifactId>junit-jupiter-api</artifactId>
             <version>RELEASE</version>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>layout</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
     </dependencies>

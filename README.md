@@ -1,1 +1,2 @@
-# d.service.freemarker
+# d.service.freemarker Module
+Providing TemplateService for freemaker templates.

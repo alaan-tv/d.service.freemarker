@@ -3,7 +3,12 @@ package media.dee.template.freemarker;
 import freemarker.template.SimpleNumber;
 import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModelException;
+import media.dee.dcms.core.db.GraphDatabaseService.GraphNode;
+import media.dee.dcms.core.db.Record;
 import media.dee.dcms.core.services.ComponentService;
+import media.dee.dcms.layout.model.Dependency;
+import media.dee.dcms.layout.model.ScriptDependency;
+import media.dee.dcms.layout.model.StyleDependency;
 
 import java.util.*;
 
@@ -25,10 +30,12 @@ public class TemplateComponentMethod implements TemplateMethodModelEx {
     @Override
     public Object exec(List args) throws TemplateModelException {
         long componentID = ((SimpleNumber)args.get(0)).getAsNumber().longValue();
-        Map<String,Object> component = componentService.findComponentById(componentID);
+        Record component = componentService.findComponentById(componentID);
+        GraphNode templateNode = component.get("template");
         if( component.containsKey("style") )
             dependencies.compute(DependencyType.Style, (key, value)->{
-                String evStyle = templateService.renderFragment((String)component.get("style"), model).toString();
+                GraphNode styleNode = component.get("style");
+                String evStyle = templateService.renderFragment(styleNode.get("value"), model).toString();
                 Dependency dependency = new StyleDependency(evStyle);
                 if( value == null )
                     return Collections.singleton(dependency);
@@ -39,8 +46,9 @@ public class TemplateComponentMethod implements TemplateMethodModelEx {
 
         if( component.containsKey("script") )
             dependencies.compute(DependencyType.Script, (key, value)->{
-                String evScript = templateService.renderFragment((String)component.get("script"), model).toString();
-                Dependency dependency = new ScriptDependency(evScript);
+                GraphNode scriptNode = component.get("script");
+                String evScript = templateService.renderFragment(scriptNode.get("value"), model).toString();
+                Dependency dependency = new ScriptDependency(evScript, scriptNode.get("injectionPoint"));
                 if( value == null )
                     return Collections.singleton(dependency);
                 Set<Dependency> rv = new HashSet<>(value);
@@ -48,6 +56,7 @@ public class TemplateComponentMethod implements TemplateMethodModelEx {
                 return rv;
             });
 
-        return templateService.renderFragment((String)component.get("template"), model).toString();
+
+        return templateService.renderFragment(templateNode.get("template"), model).toString();
     }
 }
