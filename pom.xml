@@ -15,6 +15,15 @@
     <packaging>bundle</packaging>
     <name>Dee.CMS Freemarker Template Serivce Provide</name>
 
+    <repositories>
+        <repository>
+            <name>sonatype</name>
+            <id>sonaptype</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </repository>
+    </repositories>
+
+
     <dependencies>
     <dependency>
         <groupId>org.apache.felix</groupId>
